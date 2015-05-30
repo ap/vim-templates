@@ -22,29 +22,20 @@
 " THE SOFTWARE.
 " }}}
 
-if exists( 'g:loaded_template' ) | finish | endif
-let g:loaded_template = 1
+if v:version < 700
+	echoerr printf('Vim 7 is required for templates plugin (this is only %d.%d)',v:version/100,v:version%100)
+	finish
+endif
 
 augroup template
 	autocmd!
 	autocmd FileType * if line2byte( line( '$' ) + 1 ) == -1 | call s:loadtemplate( &filetype ) | endif
 augroup END
 
-function! s:globpathlist( path, ... )
-	let i = 1
-	let result = a:path
-	while i <= a:0
-		let result = substitute( escape( globpath( result, a:{i} ), ' ,\' ), "\n", ',', 'g' )
-		if strlen( result ) == 0 | return '' | endif
-		let i = i + 1
-	endwhile
-	return result
-endfunction
-
 function! s:loadtemplate( filetype )
-	let templatefile = matchstr( s:globpathlist( &runtimepath, 'templates', a:filetype ), '\(\\.\|[^,]\)*', 0 )
-	if strlen( templatefile ) == 0 | return | endif
-	silent execute 1 'read' templatefile
+	let templates = split( globpath( &runtimepath, 'templates/' . a:filetype ), "\n" )
+	if len( templates ) == 0 | return | endif
+	silent execute 1 'read' templates[0]
 	1 delete _
 	if search( 'cursor:', 'W' )
 		let cursorline = strpart( getline( '.' ), col( '.' ) - 1 )
