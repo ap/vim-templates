@@ -27,9 +27,11 @@ if v:version < 700
 	finish
 endif
 
+let g:templates_empty_files = get(g:, 'templates_empty_files', 0)
+
 augroup Templates
 autocmd!
-autocmd FileType * if line2byte(1) == -1 | call s:loadtemplate( &filetype ) | endif
+autocmd FileType * if s:isnewfile() | call s:loadtemplate( &filetype ) | endif
 augroup END
 
 function! s:loadtemplate( filetype )
@@ -48,6 +50,10 @@ function! s:loadtemplate( filetype )
 		call cursor( y, x )
 	endif
 	set nomodified
+endfunction
+
+function! s:isnewfile()
+	return line2byte(1) == -1 && ! &modified && ( g:templates_empty_files || ! filereadable(bufname('')) )
 endfunction
 
 command -nargs=1 New new | set ft=<args>
