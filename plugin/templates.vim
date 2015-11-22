@@ -2,17 +2,17 @@
 " Licence:     The MIT License (MIT)
 " Commit:      $Format:%H$
 " {{{ Copyright (c) 2015 Aristotle Pagaltzis <pagaltzis@gmx.de>
-" 
+"
 " Permission is hereby granted, free of charge, to any person obtaining a copy
 " of this software and associated documentation files (the "Software"), to deal
 " in the Software without restriction, including without limitation the rights
 " to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 " copies of the Software, and to permit persons to whom the Software is
 " furnished to do so, subject to the following conditions:
-" 
+"
 " The above copyright notice and this permission notice shall be included in
 " all copies or substantial portions of the Software.
-" 
+"
 " THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 " IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 " FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -25,9 +25,13 @@
 if exists( 'g:loaded_template' ) | finish | endif
 let g:loaded_template = 1
 
+if exists('g:templates_empty_files')
+	let g:templates_empty_files = 0 "Default, don't create
+endif
+
 augroup template
 	autocmd!
-	autocmd FileType * if line2byte( line( '$' ) + 1 ) == -1 | call s:loadtemplate( &filetype ) | endif
+	autocmd FileType * call s:setuptemplate()
 augroup END
 
 function! s:globpathlist( path, ... )
@@ -57,6 +61,18 @@ function! s:loadtemplate( filetype )
 		call cursor( y, x )
 	endif
 	set nomodified
+endfunction
+
+function! s:setuptemplate()
+	let l:filetype = &filetype
+	" Check if the buffer is empty and brand-new
+	if line('$') == 1 && getline(1) ==# '' && !&modified
+		" Check if it's a new file
+		" g:templates_empty_files overrides this
+		if !filereadable(expand('%')) || g:templates_empty_files
+			call s:loadtemplate( &filetype )
+		endif
+	endif
 endfunction
 
 command -nargs=1 New new | set ft=<args>
