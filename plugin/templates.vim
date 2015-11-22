@@ -53,7 +53,8 @@ function! s:loadtemplate( filetype )
 endfunction
 
 function! s:isnewfile()
-	return line2byte(1) == -1 && ! &modified && ( g:templates_empty_files || ! filereadable(bufname('')) )
+	return ( has('byte_offset') ? line2byte(1) == -1 : getline(1,2) == [''] )
+		\ && ! &modified && ( g:templates_empty_files || ! filereadable(bufname('')) )
 endfunction
 
 command -nargs=1 New new | set ft=<args>
