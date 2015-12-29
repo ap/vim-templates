@@ -27,9 +27,9 @@ if v:version < 700
 	finish
 endif
 
-augroup template
-	autocmd!
-	autocmd FileType * if line2byte(1) == -1 | call s:loadtemplate( &filetype ) | endif
+augroup Templates
+autocmd!
+autocmd FileType * if line2byte(1) == -1 | call s:loadtemplate( &filetype ) | endif
 augroup END
 
 function! s:loadtemplate( filetype )
