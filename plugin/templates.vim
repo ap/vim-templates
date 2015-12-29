@@ -29,7 +29,7 @@ endif
 
 augroup template
 	autocmd!
-	autocmd FileType * if line2byte( line( '$' ) + 1 ) == -1 | call s:loadtemplate( &filetype ) | endif
+	autocmd FileType * if line2byte(1) == -1 | call s:loadtemplate( &filetype ) | endif
 augroup END
 
 function! s:loadtemplate( filetype )
