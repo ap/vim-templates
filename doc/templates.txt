@@ -1,0 +1,41 @@
+*templates.txt* Populate new files from templates based on filetype
+
+		TEMPLATES  by Aristotle Pagaltzis
+
+==============================================================================
+0. Contents                                                          *templates*
+
+    1. Intro ....................................... |templates-intro|
+    2. Configuration settings ...................... |templates-config|
+    3. Creating new templates ...................... |templates-making|
+    4. Source ...................................... |templates-source|
+
+
+==============================================================================
+1. Intro                                                       *templates-intro*
+
+This plugin takes over the 'tabline' and renders the buffer list in it instead
+of a tab list. It is designed with the ideal that it should Just Work: drop it
+into your setup and you're done. There is only minimal configurable behavior.
+
+
+==============================================================================
+2. Configuration settings                                     *templates-config*
+
+*g:templates_empty_files*    boolean (default off)
+
+    When on, opening an existing empty file will populate its content from
+    a file. By default, templates are only loaded into entirely new files.
+
+
+==============================================================================
+3. Creating new templates                                     *templates-making*
+
+
+==============================================================================
+4. Source                                                     *templates-source*
+
+https://github.com/ap/vim-templates
+
+
+vim:tw=78:et:ft=help:norl:
