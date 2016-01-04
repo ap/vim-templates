@@ -14,6 +14,13 @@ One new command has been added for convenience: it is called `:New` and takes ex
 
 A handful of templates are included, but the real purpose of the plugin is to allow you to easily create your own.
 
+Options
+-------
+
+The templates are only applied to new files, not existing empty files. If you want to setup templates so that they apply to empty files, add the following line to your `.vimrc`
+
+    g:templates_empty_files = 1
+
 
 Creating templates
 ------------------
