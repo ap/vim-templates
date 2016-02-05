@@ -36,7 +36,7 @@ augroup END
 
 function! s:loadtemplate( filetype )
 	let templates = split( globpath( &runtimepath, 'templates/' . a:filetype ), "\n" )
-	if len( templates ) == 0 | return | endif
+	if empty( templates ) | return | endif
 	silent execute 1 'read' templates[0]
 	1 delete _
 	if search( 'cursor:', 'W' )
