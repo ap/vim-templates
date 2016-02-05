@@ -31,8 +31,14 @@ let g:templates_empty_files = get(g:, 'templates_empty_files', 0)
 
 augroup Templates
 autocmd!
-autocmd FileType * if s:isnewfile() | call s:loadtemplate( &filetype ) | endif
+autocmd FileType * if s:isnewfile() | call s:loadcurrent() | endif
 augroup END
+
+function! s:loadcurrent()
+	if &filetype
+		call s:loadtemplate(&filetype)
+	endif
+endfunction
 
 function! s:loadtemplate( filetype )
 	let templates = split( globpath( &runtimepath, 'templates/' . a:filetype ), "\n" )
