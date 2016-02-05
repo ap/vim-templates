@@ -31,7 +31,7 @@ let g:templates_empty_files = get(g:, 'templates_empty_files', 0)
 
 augroup Templates
 autocmd!
-autocmd FileType * if s:isnewfile() | call s:loadtemplate( &filetype ) | endif
+autocmd FileType * if &filetype && s:isnewfile() | call s:loadtemplate( &filetype ) | endif
 augroup END
 
 function! s:loadtemplate( filetype )
