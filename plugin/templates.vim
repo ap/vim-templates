@@ -35,8 +35,8 @@ autocmd FileType * if s:isnewfile() | call s:loadtemplate( &filetype ) | endif
 augroup END
 
 function! s:loadtemplate( filetype )
-	let templates = split( globpath( &runtimepath, 'templates/' . a:filetype ), "\n" )
-	if len( templates ) == 0 | return | endif
+	let templates = filter( split( globpath( &runtimepath, 'templates/' . a:filetype ), "\n" ), 'filereadable(v:val)' )
+	if len( templates ) == 0 | return 0 | endif
 	silent execute 1 'read' templates[0]
 	1 delete _
 	if search( 'cursor:', 'W' )
@@ -50,6 +50,7 @@ function! s:loadtemplate( filetype )
 		call cursor( y, x )
 	endif
 	set nomodified
+	return 1
 endfunction
 
 function! s:isnewfile()
