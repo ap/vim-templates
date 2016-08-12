@@ -28,6 +28,7 @@ if v:version < 700
 endif
 
 let g:templates_empty_files = get(g:, 'templates_empty_files', 0)
+let g:templates_path        = get(g:, 'templates_path', 'templates/')
 
 augroup Templates
 autocmd!
@@ -35,10 +36,11 @@ autocmd FileType * if !empty( &filetype ) && s:isnewfile() | call s:loadtemplate
 augroup END
 
 function! s:loadtemplate( filetype )
-	let templates = filter( split( globpath( &runtimepath, 'templates/' . a:filetype ), "\n" ), 'filereadable(v:val)' )
+	let templates = filter( split( globpath( &runtimepath, g:templates_path . a:filetype ), "\n" ), 'filereadable(v:val)' )
 	if empty( templates ) | return 0 | endif
 	silent execute 1 'read' templates[0]
 	1 delete _
+	call s:processtemplate( &filetype )
 	if search( 'cursor:', 'W' )
 		let cursorline = strpart( getline( '.' ), col( '.' ) - 1 )
 		let y = matchstr( cursorline, '^cursor:\s*\zs\d\+\ze' )
@@ -51,6 +53,17 @@ function! s:loadtemplate( filetype )
 	endif
 	set nomodified
 	return 1
+endfunction
+
+function! s:processtemplate( filetype )
+	" Hard-coded macros
+	if search("@FILENAME@", "nw") | exec "%s/@FILENAME@/" . expand('%:t') . "/g" | endif
+	if search("@DATE@", "nw") | let l:date = strftime('%FT%T%z') | exec "%s/@DATE@/" . l:date . "/g" | endif
+
+	" Filetype-dependent macros
+	let macros = filter( split( globpath( &runtimepath, g:templates_path . a:filetype . "-macros.vim"), "\n" ), 'filereadable(v:val)' )
+	if empty( macros ) | return 0 | endif
+	exec "source " . macros[0]
 endfunction
 
 function! s:isnewfile()
