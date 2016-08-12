@@ -28,6 +28,7 @@ if v:version < 700
 endif
 
 let g:templates_empty_files = get(g:, 'templates_empty_files', 0)
+let g:templates_path        = get(g:, 'templates_path', 'templates/')
 
 augroup Templates
 autocmd!
@@ -35,7 +36,7 @@ autocmd FileType * if !empty( &filetype ) && s:isnewfile() | call s:loadtemplate
 augroup END
 
 function! s:loadtemplate( filetype )
-	let templates = filter( split( globpath( &runtimepath, 'templates/' . a:filetype ), "\n" ), 'filereadable(v:val)' )
+	let templates = filter( split( globpath( &runtimepath, g:templates_path . a:filetype ), "\n" ), 'filereadable(v:val)' )
 	if empty( templates ) | return 0 | endif
 	silent execute 1 'read' templates[0]
 	1 delete _

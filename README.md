@@ -21,6 +21,10 @@ The templates are only applied to new files, not existing empty files. If you wa
 
     g:templates_empty_files = 1
 
+Templates are taken from directory "templates/" (relative to runtime path). If you want to change that path, add the following line to your `.vimrc`
+
+    g:templates_path = "<your_path_relative_to_runtime_path>"
+
 
 Creating templates
 ------------------
