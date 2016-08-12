@@ -40,6 +40,7 @@ function! s:loadtemplate( filetype )
 	if empty( templates ) | return 0 | endif
 	silent execute 1 'read' templates[0]
 	1 delete _
+	call s:processtemplate( &filetype )
 	if search( 'cursor:', 'W' )
 		let cursorline = strpart( getline( '.' ), col( '.' ) - 1 )
 		let y = matchstr( cursorline, '^cursor:\s*\zs\d\+\ze' )
@@ -52,6 +53,18 @@ function! s:loadtemplate( filetype )
 	endif
 	set nomodified
 	return 1
+endfunction
+
+function! s:processtemplate( filetype )
+	" Hard-coded macros
+	exec "%s/@FILENAME@/" . expand('%:t') . "/g"
+	let creation_date = strftime('%FT%T%z')
+	exec "%s/@DATE@/" . creation_date . "/g"
+
+	" Filetype-dependent macros
+	let macros = filter( split( globpath( &runtimepath, g:templates_path . a:filetype . ".macros"), "\n" ), 'filereadable(v:val)' )
+	if empty( macros ) | return 0 | endif
+	exec "source " . macros[0]
 endfunction
 
 function! s:isnewfile()

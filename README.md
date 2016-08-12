@@ -25,6 +25,16 @@ Templates are taken from directory "templates/" (relative to runtime path). If y
 
     g:templates_path = "<your_path_relative_to_runtime_path>"
 
+Macro processing
+----------------
+
+Templates can embed macros that will be replaced after the template has been loaded.
+
+A few hard-coded macros are handled :
+* @FILENAME@ will be replaced with file name
+* @DATE@ will be replaced with ISO8601 date
+
+Filetype-specific macros can be defined in a file named `<filetype>-macros.vim` in templates directory. This file will be sourced and its contents executed.
 
 Creating templates
 ------------------
