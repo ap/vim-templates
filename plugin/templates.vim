@@ -39,11 +39,11 @@ function! s:loadtemplate( filetype )
 	if empty( templates ) | return 0 | endif
 	silent execute 1 'read' templates[0]
 	1 delete _
-	if search( 'cursor:', 'W' )
-		let cursorline = strpart( getline( '.' ), col( '.' ) - 1 )
-		let y = matchstr( cursorline, '^cursor:\s*\zs\d\+\ze' )
-		let x = matchstr( cursorline, '^cursor:\s*\d\+\s\+\zs\d\+\ze' )
-		let d = matchstr( cursorline, '^cursor:\s*\d\+\s\+\(\d\+\s\+\)\?\zsdel\>\ze' )
+	if search( 'cursor:', 'We' )
+		let cursorline = strpart( getline( '.' ), col( '.' ) )
+		let y = matchstr( cursorline, '^\s*\zs\d\+\ze' )
+		let x = matchstr( cursorline, '^\s*\d\+\s\+\zs\d\+\ze' )
+		let d = matchstr( cursorline, '^\s*\d\+\s\+\(\d\+\s\+\)\?\zsdel\>\ze' )
 		if ! strlen( x ) | let x = 0 | endif
 		if ! strlen( y ) | let y = 0 | endif
 		if d == 'del' | delete _ | endif
