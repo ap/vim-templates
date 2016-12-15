@@ -58,7 +58,8 @@ endfunction
 function! s:processtemplate( filetype )
 	" Hard-coded macros
 	if search("@FILENAME@", "nw") | exec "%s/@FILENAME@/" . expand('%:t') . "/g" | endif
-	if search("@DATE@", "nw") | let l:date = strftime('%FT%T%z') | exec "%s/@DATE@/" . l:date . "/g" | endif
+	if search("@DATE@", "nw") | let l:date = strftime('%F') | exec "%s/@DATE@/" . l:date . "/g" | endif
+	if search("@DATETIME@", "nw") | let l:date_time = strftime('%FT%T%z') | exec "%s/@DATETIME@/" . l:date_time . "/g" | endif
 
 	" Filetype-dependent macros
 	let macros = filter( split( globpath( &runtimepath, g:templates_path . a:filetype . "-macros.vim"), "\n" ), 'filereadable(v:val)' )

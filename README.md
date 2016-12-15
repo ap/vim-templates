@@ -33,6 +33,7 @@ Templates can embed macros that will be replaced after the template has been loa
 A few hard-coded macros are handled :
 * @FILENAME@ will be replaced with file name
 * @DATE@ will be replaced with ISO8601 date
+* @DATETIME@ will be replaced with ISO8601 date and time
 
 Filetype-specific macros can be defined in a file named `<filetype>-macros.vim` in templates directory. This file will be sourced and its contents executed.
 
