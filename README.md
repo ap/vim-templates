@@ -25,6 +25,17 @@ The templates are only applied to new files, not existing empty files. If you wa
 Creating templates
 ------------------
 
-Templates are kept in `.vim/templates`. The template filename must be equal to the `filetype`. So when you set the filetype of an empty buffer to `html`, `.vim/templates/html` will be loaded. It's that simple.
+Directory for storing templates:
+
+* Vim: `.vim/templates`
+* Neovim: `.config/nvim/templates`
+
+In general, you can put templates in a subdirectory named "templates" of any directory in your runtimepath. To check what your current runtimepath is set to:
+
+```
+:echo &rtp
+```
+
+The template filename must be equal to the `filetype`. So when you set the filetype of an empty buffer to `html`, `.vim/templates/html` will be loaded. It's that simple.
 
 In the templates, you can use a `cursorline` directive to specify a position for the cursor after loading the template. Such a cursorline works much like a modeline: the word `cursor:` must appear, followed by one or two numbers and opionally the word `del`, all separated by whitespace. The first number specifies the line the cursor will be placed in. The second, if present, specifies a column. The optional word `del` directs the script to remove the cursorline at load time. Take a look at the templates supplied in the package, it should be fairly self-explanatory.
